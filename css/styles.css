@@ -251,6 +251,9 @@ noscript {
     width:  100%;
     height: 100%;
 }
+#fakeWatermark {
+    z-index: 9999;
+}
 #loading {
     margin-top: calc(40vh - 85px);
     font-size: calc((100vmin - 34px) / 10);
