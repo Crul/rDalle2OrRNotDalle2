@@ -496,8 +496,11 @@ function htmlDecode(input) {
 /* https://gist.github.com/SleepWalker/da5636b1abcbaff48c4d */
 var isFirstTouch = true;
 var touchstartX = 0;
+var touchstartY = 0;
 var touchendX = 0;
-const MIN_DIST_TO_SWIPE = 50;
+var touchendY = 0;
+const MIN_DIST_TO_SWIPE = 75;
+const MIN_XY_RATIO_TO_SWIPE = 0.9;
 
 var gesuredZone = document.body;
 
@@ -506,20 +509,26 @@ gesuredZone.addEventListener('touchstart', function(event) {
         showSwipeHelp();
 
     touchstartX = event.changedTouches[0].screenX;
+    touchstartY = event.changedTouches[0].screenY;
     isFirstTouch = false;
 }, false);
 
 gesuredZone.addEventListener('touchend', function(event) {
     touchendX = event.changedTouches[0].screenX;
+    touchendY = event.changedTouches[0].screenY;
     handleGesure();
 }, false);
 
 function handleGesure() {
-    var swipedDist = touchstartX - touchendX;
-    if (Math.abs(swipedDist) < MIN_DIST_TO_SWIPE)
+    var swipedDistX = touchstartX - touchendX;
+    if (Math.abs(swipedDistX) < MIN_DIST_TO_SWIPE)
         return;
 
-    var swipedLeft = (swipedDist > 0);
+    var swipedDistY = touchstartY - touchendY;
+    if (swipedDistY == 0 || swipedDistX/swipedDistY < MIN_XY_RATIO_TO_SWIPE)
+        return;
+
+    var swipedLeft = (swipedDistX > 0);
     if (isAnswerPending) {
         setAnswer(swipedLeft);
         return;
