@@ -499,7 +499,7 @@ var touchstartX = 0;
 var touchstartY = 0;
 var touchendX = 0;
 var touchendY = 0;
-const MIN_DIST_TO_SWIPE = 75;
+const MIN_DIST_TO_SWIPE = 50;
 const MIN_XY_RATIO_TO_SWIPE = 0.9;
 
 var gesuredZone = document.body;
@@ -521,11 +521,12 @@ gesuredZone.addEventListener('touchend', function(event) {
 
 function handleGesure() {
     var swipedDistX = touchstartX - touchendX;
-    if (Math.abs(swipedDistX) < MIN_DIST_TO_SWIPE)
+    var absSwipedDistX = Math.abs(swipedDistX);
+    if (absSwipedDistX < MIN_DIST_TO_SWIPE)
         return;
 
-    var swipedDistY = touchstartY - touchendY;
-    if (swipedDistY == 0 || swipedDistX/swipedDistY < MIN_XY_RATIO_TO_SWIPE)
+    var absSwipedDistY = Math.abs(touchstartY - touchendY);
+    if (absSwipedDistY == 0 || absSwipedDistX/absSwipedDistY < MIN_XY_RATIO_TO_SWIPE)
         return;
 
     var swipedLeft = (swipedDistX > 0);
