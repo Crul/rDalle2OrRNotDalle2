@@ -7,10 +7,10 @@ var topPanel = ge('topPanel');
 var mainImg = ge('mainImage');
 var fakeWatermark = ge('fakeWatermark');
 var postTitle = ge('postTitle');
-var realDalle2Btn = ge('realDalle2Btn');
+var dalle2Btn = ge('dalle2Btn');
 var notDalle2Btn = ge('notDalle2Btn');
 var showTitleBtn = ge('showTitleBtn');
-var answerBtns = [realDalle2Btn,notDalle2Btn,showTitleBtn];
+var answerBtns = [dalle2Btn,notDalle2Btn,showTitleBtn];
 var result = ge('result');
 var resultText = ge('resultText');
 var postLink = ge('postLink');
@@ -41,9 +41,9 @@ var score = {
     notDalle2: { total: 0, correct: 0},
 };
 
-const GENERIC_TITLE = 'r/Dalle2 or r/NotDalle2 ?';
 const DALLE_SUBREDDIT = 'dalle2';
 const NOT_DALLE_SUBREDDIT = 'NotDALLE2';
+const GENERIC_TITLE = `r/${DALLE_SUBREDDIT} or r/${NOT_DALLE_SUBREDDIT} ?`;
 
 
 function init() {
@@ -126,7 +126,7 @@ function showTitle(force) {
         var isDalle2 = (post.subreddit == DALLE_SUBREDDIT);
         var isCorrectAnswer = (postData.answer == isDalle2);
         postTitle.innerHTML =
-            `[${isDalle2 ? "r/Dalle2" : "r/NotDalle2"}] `
+            `r/[${isDalle2 ? DALLE_SUBREDDIT : NOT_DALLE_SUBREDDIT}] `
             + (isCorrectAnswer ? '✅' : '❌')
             + ` <a href="${getRedditPostAHref(post)}" target="_blank">${post.title}</a>`
             + ` by <a href="${getRedditUserAHref(post)}" target="_blank">${post.author}</a>`;
@@ -171,7 +171,8 @@ function loadImageRecursive(isDalle2) {
     var client = new XMLHttpRequest();
     client.onload = handleHttpRequest;
     client.onerror = handleHttpRequest;
-    var randomPostUrl = `https://api.reddit.com/r/${isDalle2 ? '' : 'Not'}DALLE2/random.json?$rnd=${Math.random()}`;
+    var sub = isDalle2 ? DALLE_SUBREDDIT : NOT_DALLE_SUBREDDIT;
+    var randomPostUrl = `https://api.reddit.com/r/${sub}/random.json?$rnd=${Math.random()}`;
     client.open('GET', randomPostUrl);
     client.send();
 
@@ -312,10 +313,13 @@ function getRedditPost(data) {
 
 function showResult(post, isDalle2, answer) {
     var isCorrect = (isDalle2 == answer);
-    var realFake = (isDalle2 ? 'real' : 'fake')
+    var correctWrong = isCorrect ? 'CORRECT' : 'WRONG';
+    var yesNo = isCorrect ? 'Yes' : 'No';
+    var madeBy = (isDalle2 ? 'was made by an AI (DALL-E 2)' : 'is human made');
+    var sub = (isDalle2 ? DALLE_SUBREDDIT : NOT_DALLE_SUBREDDIT);
 
-    resultText.innerHTML = `<h1>${isCorrect ? 'CORRECT' : 'WRONG'}</h1><br />`+
-        `${isCorrect ? 'Yes' : 'No'}, it's a ${realFake} DALLE-2 image posted on <a>r/DALLE2</a>:`;
+    resultText.innerHTML = `<h1>${correctWrong}</h1><br />`+
+        `${yesNo}, the image ${madeBy}, it was posted on <a>r/${sub}</a>:`;
 
     postLink.href = getRedditPostAHref(post);
     postLink.innerHTML = post.title;
@@ -361,7 +365,7 @@ function getImageUrlBySize(post, metadataKey) {
 
     return htmlDecode(
         validImgs.length > 0 ? validImgs[0].u
-        : post.media_metadata[key].s.u
+        : post.media_metadata[metadataKey].s.u
     );
 }
 
@@ -383,7 +387,7 @@ function setFakeWatermark(isAnswerPending, postData) {
 function onKeyDown(event) {
     switch(event.key.toUpperCase()) {
         case 'Y':
-        case 'R': setAnswer(true);      break;
+        case 'D': setAnswer(true);      break;
         case 'N': setAnswer(false);     break;
         case 'W': showNextImage();      break;
         case 'T': showTitle(true);      break;
@@ -404,7 +408,6 @@ function onKeyDown(event) {
 }
 
 function moveFocus(step) {
-// var answerBtns = [realDalle2Btn,notDalle2Btn,showTitleBtn];
     var actElem = document.activeElement;
     if (actElem == showTitleAlwaysChk) {
         actElem = actElem.parentElement;
@@ -412,8 +415,8 @@ function moveFocus(step) {
 
     if (actElem.tagName != 'BUTTON'
         && actElem.tagName != 'LABEL') {
-        if (realDalle2Btn.className.indexOf('answerPending') >= 0) {
-            realDalle2Btn.focus();
+        if (dalle2Btn.className.indexOf('answerPending') >= 0) {
+            dalle2Btn.focus();
         } else {
             newImgBtn.focus();
         }
@@ -454,8 +457,8 @@ function showSwipeHelp() {
 }
 
 function setSwipeHelpVisibility(visible) {
-    swipeHelpLeft.style.display = visible ? 'block' : 'none';
-    swipeHelpRight.style.display = visible ? 'block' : 'none';
+    swipeHelpLeft.className = visible ? 'visible' : '';
+    swipeHelpRight.className = visible ? 'visible' : '';
 }
 
 function onWindowResize() {;
@@ -516,11 +519,11 @@ function handleGesure() {
     if (Math.abs(swipedDist) < MIN_DIST_TO_SWIPE)
         return;
 
-    var swipedRight = (swipedDist < 0);
+    var swipedLeft = (swipedDist > 0);
     if (isAnswerPending) {
-        setAnswer(swipedRight);
+        setAnswer(swipedLeft);
         return;
     }
 
-    navigateHistory(swipedRight ? 1 : -1);
+    navigateHistory(swipedLeft ? -1 : 1);
 }

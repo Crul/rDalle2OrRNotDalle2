@@ -23,7 +23,7 @@
 
     <link rel="stylesheet" href="css/reset.css?v=1.0">
     <link rel="stylesheet" href="css/spinner.css?v=1.0">
-    <link rel="stylesheet" href="css/styles.css?v=1.1">
+    <link rel="stylesheet" href="css/styles.css?v=1.2">
 
 </head>
 
@@ -36,28 +36,30 @@
             <span id="totalScore">0/0</span>
         </div>
         <div>
-            <div id="dalle2ScoreTitle">REAL DALL-E&nbsp;2</div>
-            <span id="dalle2Score">0/0</span>
+            <div id="dalle2ScoreTitle">DALL-E&nbsp;2</div><span id="dalle2Score">0/0</span>
         </div>
         <div>
-            <div id="notDalle2ScoreTitle">NOT DALL-E&nbsp;2</div>
-            <span id="notDalle2Score">0/0</span>
+            <div id="notDalle2ScoreTitle">NOT&nbsp;DALL-E&nbsp;2</div><span id="notDalle2Score">0/0</span>
         </div>
     </div>
 
     <div id="btns">
-        <button id="notDalle2Btn" onclick="setAnswer(false)">
-            <strong><u>N</u>OT</strong> DALL-E&nbsp;2
+        <button id="dalle2Btn" onclick="setAnswer(true)">
+            <img src="imgs/robot-svgrepo-com.svg" width="25" height="25" />
+            made by AI<br />
+            <strong><u>D</u>ALL-E&nbsp;2</strong>
         </button>
-        <button id="realDalle2Btn" onclick="setAnswer(true)">
-            <strong><u>R</u>EAL</strong> DALL-E&nbsp;2
+        <button id="notDalle2Btn" onclick="setAnswer(false)">
+            <img src="imgs/head-svgrepo-com.svg" width="25" height="25" />
+            <u>h</u>uman made<br />
+            <strong><u>N</u>OT</strong>&nbsp;DALL-E&nbsp;2
         </button>
         <button id="newImgBtn" onclick="showNextImage()">
-            <strong>NE<u>W</u></strong> IMAGE
+            <strong>NE<u>W</u><br/></strong> IMAGE
         </button>
         <div>
             <button id="showTitleBtn" onclick="showTitle(true)">
-                SHOW <strong><u>T</u>ITLE</strong>
+                SHOW<br/><strong><u>T</u>ITLE</strong>
             </button>
             <label id="showTitleAlways"
                    for="showTitleAlwaysChk"
@@ -82,7 +84,7 @@
     </div>
 
     <div id="imgContainer">
-        <img id="fakeWatermark" src="fake-dalle-2-watermark.png" />
+        <img id="fakeWatermark" src="imgs/fake-dalle-2-watermark.png" />
         <div id="loading">
             <div class="lds-spinner">
                 <div></div><div></div><div></div><div></div><div></div><div></div>
@@ -106,11 +108,16 @@
     <button id="helpBtn" onclick="openHelp()">?</button>
 
     <div id="help">
+        <button id="closeHelpBtn" onclick="closeHelp()">×</button>
         <h1>
-            <button id="closeHelpBtn" onclick="closeHelp()">×</button>
-            Disclaimer: This page is a small project, just for fun, there is not relation with DALL-E or Open AI
+            Disclaimer: This page is a small project, just for fun, there is not relation with DALL-E or Open&nbsp;AI
         </h1>
         <h2>r/Dalle2 or r/NotDalle2</h2>
+        <h3>Instructions</h3>
+        <ul>
+        <li>Press the <strong class="red">RED</strong> button (or swipe left) <strong>if you think the image has been done by DALL-E 2</strong> (an AI)</li>
+        <li>Press the <strong class="green">GREEN</strong> button (or swipe right) <strong>if you think the image has been done by a human</strong> (photo, painting, ...)</li>
+        </ul>
         <h3>What is this?</h3>
         <ul>
         <li><a href="https://en.wikipedia.org/wiki/DALL-E" target="_blank">DALL-E 2</a> is an artificial inteligence that generates images from text.</li>
@@ -130,34 +137,43 @@
 
         <h3>Keyboard controls</h3>
         <ul>
-        <li>Y,R: Answer "<u>Y</u>es, it's a <u>R</u>EAL r/dalle2 post"</li>
-        <li>N: Answer "<u>N</u>o, it's a FAKE r/<u>N</u>otDalle2 post"</li>
+        <li>Y/D: Answer "<u>Y</u>es, the image is from from r/dalle2 and was made by <u>D</u>ALL-E 2"</li>
+        <li>N: Answer "<u>N</u>o, the image is from r/<u>N</u>otDalle2 and was made by a human"</li>
         <li>W: Load Ne<u>w</u> Image</li>
         <li>T: Show <u>T</u>itle</li>
         <li>B: Previous image (<u>B</u>ack)</li>
         <li>F: Next image (<u>F</u>orward)</li>
-        <li>?,H: Show <u>H</u>elp</li>
+        <li>?/H: Show <u>H</u>elp</li>
         </ul>
 
         <h3>Source code</h3>
-        <p><a href="https://github.com/Crul/rDalle2OrRNotDalle2" target="_blank">GitHub link</a></p>
+        <p><a href="https://github.com/Crul/rDalle2OrRNotDalle2" target="_blank">https://github.com/Crul/rDalle2OrRNotDalle2</a></p>
+
+        <h3>Attribution</h3>
+        <p>
+            Icons <a href="https://www.svgrepo.com/svg/6979/head" target="_blank">head</a>
+            and <a href="https://www.svgrepo.com/svg/18606/robot" target="_blank">robot</a>
+            from <a href="https://www.svgrepo.com" target="_blank">SVG Repo</a>
+        </p>
     </div>
 
     <div id="swipeHelpLeft">
+        <img src="imgs/robot-svgrepo-com.svg" width="50" height="50" />
         Swipe <strong>LEFT</strong><br/>
         if you think<br/>
-        it's a FAKE<br/>
-        <strong>r/NotDalle2</strong><br/>
-        post
+        it's an image<br/>
+        made by an AI<br/>
+        (from r/dalle2)
     </div>
     <div id="swipeHelpRight">
+        <img src="imgs/head-svgrepo-com.svg" width="50" height="50" />
         Swipe <strong>RIGHT</strong><br/>
         if you think<br/>
-        it's a REAL<br/>
-        <strong>r/dalle2</strong><br/>
-        post
+        it's an image<br/>
+        made by a human<br/>
+        (from r/NotDALLE2)
     </div>
 
-    <script src="scripts.js?v=1.0"></script>
+    <script src="scripts.js?v=1.2"></script>
 </body>
 </html>

@@ -8,18 +8,30 @@ html, body {
     font-family: Tahoma, Verdana, non-serif;
     background: #222;
     font-size: 18px;
-    min-height: max(100vh, 300px);
+    min-height: max(100vh, 340px);
     min-width: 300px;
+    overflow-x: hidden;
 }
 a, button, a *, button * {
     cursor: pointer;
     border: none;
+}
+img {
+    margin: auto;
 }
 noscript {
     display: block;
     margin: auto;
     color: white;
     padding: 100px;
+}
+.red {
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: red;
+}
+.green {
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: green;
 }
 #score,
 #btns,
@@ -38,7 +50,7 @@ noscript {
 #score > div > div {
     background-color: #aaa;
     font-size: 13px;
-    padding: 0 8px;
+    padding: 0;
 }
 #score #totalScoreTitle {
     background-color: #ccc;
@@ -51,11 +63,11 @@ noscript {
 }
 #score #dalle2ScoreTitle,
 #score #dalle2Score {
-    color: #004400;
+    color: #660000;
 }
 #score #notDalle2ScoreTitle,
 #score #notDalle2Score {
-    color: #660000;
+    color: #004400;
 }
 #score span {
     font-size: 18px;
@@ -77,10 +89,11 @@ noscript {
     margin: 1px 0 4px;
     height: 56px;
     cursor: not-allowed;
-    padding: 0 10px;
+    padding: 0;
     opacity: 0.5;
     color: #fff6;
-    border: solid 1px #fff6;
+    border: solid 1px #fff0;
+    z-index: 200;
 }
 #btns button * {
     cursor: not-allowed;
@@ -90,11 +103,19 @@ noscript {
     border: solid 1px #fff6;
 }
 
-#btns #realDalle2Btn {
-    background-color: #445544;
+#btns img {
+    fill: white;
+}
+#btns #dalle2Btn,
+#btns #notDalle2Btn {
+    font-size: 12px;
+    height: 80px;
+}
+#btns #dalle2Btn {
+    background-color: #996666;
 }
 #btns #notDalle2Btn {
-    background-color: #996666;
+    background-color: #445544;
 }
 #btns #newImgBtn,
 #newImgBtnResult {
@@ -112,6 +133,21 @@ noscript {
     padding: 8px;
     height: auto;
 }
+
+#btns .answerPending {
+    color: #fffc;
+    cursor: pointer;
+    opacity: 1;
+}
+#btns .answerPending * {
+    cursor: pointer;
+}
+#newImgBtnResult,
+#btns #dalle2Btn.answerPending:hover,
+#btns #notDalle2Btn.answerPending:hover {
+    color: white;
+    border: solid 1px white;
+}
 #btns #showTitleBtn {
     background-color: #446699;
     margin-bottom: -20px;
@@ -119,28 +155,11 @@ noscript {
     height: calc(56px - 19px);
     line-height: 15px;
 }
-
-#btns .answerPending {
-    color: #fffc;
-    border: solid 1px #333;
-    cursor: pointer;
-    opacity: 1;
-}
-#btns .answerPending * {
-    cursor: pointer;
-}
-#btns #newImgBtn,
-#newImgBtnResult,
-#btns #realDalle2Btn.answerPending:hover,
-#btns #notDalle2Btn.answerPending:hover {
-    color: white;
-    border: solid 1px white;
-}
-#btns #realDalle2Btn.answerPending {
-    background-color: #008800;
+#btns #dalle2Btn.answerPending {
+    background-color: #ff0000;
 }
 #btns #notDalle2Btn.answerPending {
-    background-color: #ff0000;
+    background-color: #008800;
 }
 
 #btns #showTitleBtn.answerPending {
@@ -252,7 +271,7 @@ noscript {
     height: 100%;
 }
 #fakeWatermark {
-    z-index: 9999;
+    z-index: 150;
 }
 #loading {
     margin-top: calc(40vh - 85px);
@@ -367,6 +386,7 @@ noscript {
 #help {
     display: none;
     position: fixed;
+    overflow-y: scroll;
     z-index: 100;
     top: 10px;
     left: 10px;
@@ -375,31 +395,30 @@ noscript {
     background: #1c3f71;
     color: #ddd;
     text-align: left;
-    overflow-y: scroll;
     font-size: 16px;
     padding-bottom: 24px;
-}
-#closeHelpBtn {
-    float: right;
-    background: none;
-    color: white;
-    line-height: 18px;
-    padding: 13px;
-    margin-right: -12px;
-    margin-top: -9px;
 }
 #help h1 {
     font-size: 20px;
     background-color: red;
     text-align: center;
-    padding: 2px 12px;
+    padding: 2px 60px;
+}
+#closeHelpBtn {
+    position: fixed;
+    background: none;
+    color: white;
+    padding: 13px;
+    right: 28px;
+    font-size: 32px;
 }
 #help h2 {
     text-align: center;
+    margin: 16px 0 8px 0;
 }
 #help h3, p, ul {
     margin-left: 24px;
-    margin-right: 24px;
+    margin-right: 48px;
 }
 #help a,
 #help a:visited {
@@ -408,32 +427,55 @@ noscript {
 #help a:hover {
     color: white;
 }
-
 #help pre {
     display: inline;
+}
+#help li {
+    margin: 8px 0;
 }
 
 #swipeHelpLeft,
 #swipeHelpRight {
-    display: none;
-    position: absolute;
-    top: calc((100vh - 100px)/2);
+    opacity: 0;
+    display: block;
+    position: fixed;
+    top: calc((100vh - 210px)/2);
     color: white;
-    width: 125px;
+    width: 160px;
     padding: 18px 12px;
     z-index: 999;
     font-size: 15px;
     box-shadow: #0006 0 5px 30px;
 }
+#swipeHelpLeft img,
+#swipeHelpRight img {
+    margin-bottom: 8px;
+}
 #swipeHelpLeft {
     background: #e00d;
-    left: 0px;
+    left: -160px;
     border-radius: 0 12px 12px 0;
+    -webkit-transition: left 0.5s ease-in-out, opacity 0.2s ease-in-out;
+    -moz-transition:    left 0.5s ease-in-out, opacity 0.2s ease-in-out;
+    -o-transition:      left 0.5s ease-in-out, opacity 0.2s ease-in-out;
+    transition:         left 0.5s ease-in-out, opacity 0.2s ease-in-out;
+}
+#swipeHelpLeft.visible {
+    opacity: 1;
+    left: 0px;
 }
 #swipeHelpRight {
     background: #0c0e;
-    right: 0px;
+    right: -160px;
     border-radius: 12px 0 0 12px;
+    -webkit-transition: right 0.5s ease-in-out, opacity 0.2s ease-in-out;
+    -moz-transition:    right 0.5s ease-in-out, opacity 0.2s ease-in-out;
+    -o-transition:      right 0.5s ease-in-out, opacity 0.2s ease-in-out;
+    transition:         right 0.5s ease-in-out, opacity 0.2s ease-in-out;
+}
+#swipeHelpRight.visible {
+    opacity: 1;
+    right: 0px;
 }
 
 
@@ -469,17 +511,17 @@ noscript {
 
 @media screen and (max-aspect-ratio: 33/24) {
     #score {
-        width: 300px;
+        width: 350px;
         margin: 0;
         position: absolute;
-        left: max(0px, calc(50vw - 300px/2));
+        left: max(0px, calc(50vw - 350px/2));
     }
     #score > div {
         float: left;
         margin: 0 1px;
     }
     #score > div > div {
-        width: 98px;
+        width: calc(350px / 3 - 2px);
         height: 29px;
         line-height: 28px;
         padding: 0;
@@ -491,37 +533,42 @@ noscript {
     }
 
     #btns {
-        width: 298px;
+        width: 350px;
         margin: 0;
         position: absolute;
         top: 56px;
-        left: max(0px, calc(50vw - 298px/2));
+        left: max(0px, calc(50vw - 350px/2));
     }
     #btns > button,
     #btns > div {
         float: left;
-        width: calc(298px/4);
+        width: calc(350px/4);
         padding: 0;
+        height: 80px;
+    }
+    #btns #showTitleBtn {
+        height: calc(80px - 19px);
+        margin-bottom: 0;
     }
 
     #topPanel {
         position: absolute;
-        top: calc(113px + max(0px, calc((100vh - 180px - min(100vw, calc(100vh - 147px))) / 3)));
-        left: max(0px, calc(50vw - (100vh - 147px)/2));
+        top: calc(134px + max(0px, calc((100vh - 180px - min(100vw, calc(100vh - 168px))) / 3)));
+        left: max(0px, calc(50vw - (100vh - 168px)/2));
         min-width:  300px;
-        width: min(100vw, calc(100vh - 147px));
+        width: min(100vw, calc(100vh - 168px));
     }
     #postTitle {
-        max-width: calc(min(100vw, calc(100vh - 147px)) - 100px);
+        max-width: calc(min(100vw, calc(100vh - 168px)) - 100px);
     }
     #imgContainer{
         position: absolute;
-        top: calc(145px + max(0px, calc((100vh - 180px - min(100vw, calc(100vh - 147px))) / 3)));
-        left: max(0px, calc(50vw - (100vh - 147px)/2));
+        top: calc(166px + max(0px, calc((100vh - 180px - min(100vw, calc(100vh - 168px))) / 3)));
+        left: max(0px, calc(50vw - (100vh - 168px)/2));
         min-height: 300px;
         min-width:  300px;
-        width: min(100vw, calc(100vh - 147px));
-        height: min(100vw, calc(100vh - 147px));
+        width: min(100vw, calc(100vh - 168px));
+        height: min(100vw, calc(100vh - 168px));
     }
     #loading {
         margin-top: max(75px, calc(min(100vw, calc(100vh - 147px)) / 4));
@@ -537,52 +584,84 @@ noscript {
 }
 @media screen and (max-aspect-ratio: 33/24) and (min-width: 700px) {
     #score {
+        width: 250px;
         left: max(0px, calc(50vw - 600px/2));
+        top: 1px;
     }
-    #score > div > span,
+    #score > div {
+        margin: 0;
+    }
+    #score > div > div {
+        margin: 0;
+        width: 98px;
+    }
+    /* #score > div > span, */
     #score #totalScore {
         font-size: 19px;
+        height: 51px;
+        line-height: 52px;
+    }
+    #score #dalle2ScoreTitle,
+    #score #notDalle2ScoreTitle {
+        display: inline-block;
+        width: 91px;
+        height: 40px;
+        line-height: 40px;
+        vertical-align: top;
+        margin: 0 0 1px 1px;
+    }
+    #score #dalle2Score,
+    #score #notDalle2Score {
+        display: inline-block;
+        width: 60px;
+        height: 40px;
+        line-height: 40px;
+        vertical-align: top;
     }
 
     #btns {
         top: 0;
-        left: max(0px, calc(50vw + 1px));
+        left: max(0px, calc(50vw - 50px));
     }
+
     #topPanel {
-        top: 57px;
-        left: max(0px, calc(50vw - (100vh - 90px)/2));
+        top: 80px;
+        left: max(0px, calc(50vw - (100vh - 113px)/2));
         min-width:  300px;
-        width: min(100vw, calc(100vh - 90px));
+        width: min(100vw, calc(100vh - 113px));
     }
     #postTitle {
-        max-width: calc(min(100vw, calc(100vh - 90px)) - 100px);
+        max-width: calc(min(100vw, calc(100vh - 113px)) - 100px);
     }
     #imgContainer{
         position: absolute;
-        top: 89px;
-        left: max(0px, calc(50vw - (100vh - 90px)/2));
+        top: 112px;
+        left: max(0px, calc(50vw - (100vh - 113px)/2));
         min-height: 300px;
         min-width:  300px;
-        width: min(100vw, calc(100vh - 90px));
-        height: min(100vw, calc(100vh - 90px));
+        width: min(100vw, calc(100vh - 113px));
+        height: min(100vw, calc(100vh - 113px));
     }
     #loading {
         font-size: max(29.7px, min(100vw, calc(100vh - 90px) / 10));
     }
 }
-@media screen and (max-aspect-ratio: 33/24) and (max-width: 420px) {
+@media screen and (max-aspect-ratio: 33/24) and (max-width: 450px) {
     #score,
     #btns {
         left: 0px;
     }
     #helpBtn {
         left: auto;
-        right: 20px;
+        right: 10px;
         bottom: auto;
         top: 20px;
     }
 }
-@media screen and (max-aspect-ratio: 33/24) and (max-height: 444px) {
+@media screen and (max-aspect-ratio: 33/24) and (max-height: 470px) {
+    body {
+        min-height: 465px;
+    }
     #topPanel,
     #imgContainer {
         left: max(0px, calc(50vw - 300px/2));
