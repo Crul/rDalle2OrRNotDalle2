@@ -651,11 +651,17 @@ noscript {
     #btns {
         left: 0px;
     }
+    #score #dalle2ScoreTitle,
+    #score #dalle2Score,
+    #score #notDalle2ScoreTitle,
+    #score #notDalle2Score {
+        width: 95px;
+    }
     #helpBtn {
         left: auto;
         right: 10px;
         bottom: auto;
-        top: 20px;
+        top: 10px;
     }
 }
 @media screen and (max-aspect-ratio: 33/24) and (max-height: 470px) {
