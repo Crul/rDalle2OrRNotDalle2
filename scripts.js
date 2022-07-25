@@ -130,7 +130,7 @@ function showTitle(force) {
         var isDalle2 = (post.subreddit == DALLE_SUBREDDIT);
         var isCorrectAnswer = (postData.answer == isDalle2);
         postTitle.innerHTML =
-            `r/[${isDalle2 ? DALLE_SUBREDDIT : NOT_DALLE_SUBREDDIT}] `
+            `[r/${isDalle2 ? DALLE_SUBREDDIT : NOT_DALLE_SUBREDDIT}] `
             + (isCorrectAnswer ? '✅' : '❌')
             + ` <a href="${getRedditPostAHref(post)}" target="_blank">${post.title}</a>`
             + ` by <a href="${getRedditUserAHref(post)}" target="_blank">${post.author}</a>`;
