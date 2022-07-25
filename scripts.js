@@ -3,7 +3,7 @@ document.addEventListener('keydown', onKeyDown);
 document.addEventListener('DOMContentLoaded', init);
 
 var filterPostWithFlairs = [
-    "DISCUSSION", "UNVERIFIED", "NEWS", "ARTICLE"
+    'DISCUSSION', 'UNVERIFIED', 'NEWS', 'ARTICLE'
 ];
 
 var ge = id => document.getElementById(id);
@@ -386,6 +386,7 @@ function setIsAnswerPending(value) {
     isAnswerPending = value;
     var btnCssClass = value ? 'answerPending' : '';
     answerBtns.forEach(btn => btn.className = btnCssClass);
+    mainImg.className = value ? 'answerPending' : '';
 }
 
 function setFakeWatermark(isAnswerPending, postData) {

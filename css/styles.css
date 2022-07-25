@@ -361,10 +361,14 @@ noscript {
 #mainImage {
     position: absolute;
     z-index: 100;
-    object-fit: cover;
+    object-fit: contain;
     height: 100%;
     width:  100%;
     outline: solid 1px #444;
+}
+#mainImage.answerPending {
+    object-fit: cover;
+    background: transparent;
 }
 
 #helpBtn {
