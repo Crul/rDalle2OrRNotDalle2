@@ -2,6 +2,10 @@ window.addEventListener('resize', onWindowResize);
 document.addEventListener('keydown', onKeyDown);
 document.addEventListener('DOMContentLoaded', init);
 
+var filterPostWithFlairs = [
+    "DISCUSSION", "UNVERIFIED", "NEWS", "ARTICLE"
+];
+
 var ge = id => document.getElementById(id);
 var topPanel = ge('topPanel');
 var mainImg = ge('mainImage');
@@ -191,6 +195,11 @@ function loadImageRecursive(isDalle2) {
             return loadImageRecursive(isDalle2);
         }
         postIds.push(postId);
+
+        if (post.link_flair_text
+            && filterPostWithFlairs.indexOf(post.link_flair_text.toUpperCase()) >= 0) {
+            return loadImageRecursive(isDalle2);
+        }
 
         var url = post.url;
         if (post.media_metadata) {
